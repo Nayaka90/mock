@@ -59,7 +59,15 @@ export const config = {
         maxInstances: 5,
         //
         browserName: 'chrome',
-        acceptInsecureCerts: true
+        acceptInsecureCerts: true,
+            acceptInsecureCerts: true,
+            
+    'goog:chromeOptions': {
+                prefs: {
+                  // 0 - Default, 1 - Allow, 2 - Block
+                  'profile.managed_default_content_settings.notifications': 1
+                }
+              }
         // If outputDir is provided WebdriverIO can capture driver session logs
         // it is possible to configure which logTypes to include/exclude.
         // excludeDriverLogs: ['*'], // pass '*' to exclude all driver session logs
@@ -80,7 +88,7 @@ export const config = {
     // - @wdio/browserstack-service, @wdio/devtools-service, @wdio/sauce-service
     // - @wdio/mocha-framework, @wdio/jasmine-framework
     // - @wdio/local-runner
-    // - @wdio/sumologic-reporter
+    // - @wdio/sum/ologic-reporter
     // - @wdio/cli, @wdio/config, @wdio/utils
     // Level of logging verbosity: trace | debug | info | warn | error | silent
     // logLevels: {
@@ -96,7 +104,7 @@ export const config = {
     // with `/`, the base url gets prepended, not including the path portion of your baseUrl.
     // If your `url` parameter starts without a scheme or `/` (like `some/path`), the base url
     // gets prepended directly.
-    baseUrl: 'http://testingserver/domain/Hospital_Management_System/http://testingserver/domain/Hospital_Management_System/',
+    baseUrl: 'http://localhost',
     //
     // Default timeout for all waitFor* commands.
     waitforTimeout: 10000,
@@ -143,7 +151,7 @@ export const config = {
     // See the full list at http://mochajs.org/
     mochaOpts: {
         ui: 'bdd',
-        timeout:60000
+        timeout:600000
     },
     //
     // =====
