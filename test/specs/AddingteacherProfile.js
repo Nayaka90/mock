@@ -2,23 +2,24 @@
 describe('Admin activities',async () => {
     var r=Math.random()
     var random=Math.floor(r*(99-1)+1)
-    const fullname=`NITHISH_yb${random}`
+    const fullname =`NITHISH_yb${random}` 
     it('Launching browser and passing url', async () => {
-        
         await browser.maximizeWindow()
         await browser.url("http://testingserver/domain/Student_Management_System/view/login.php")
-        await expect(browser).toHaveTitleContaining("Student")
+        expect(browser).toHaveUrlContaining("login")
     }) 
     it('login as a admin',async()=>{
         await browser.$(`[name='email']`).setValue("admin@gmail.com")
         await browser.$(`[name='password']`).setValue("12345")
         await browser.$(`#btnSubmit`).waitForClickable()
         await browser.$(`#btnSubmit`).click()
+        expect(browser).toHaveUrlContaining("dashboard")
     })
  
     it(`adding teacher profile`,async()=>{
     await browser.$(`//span[text()='Teacher']`).click()
     await browser.$(`a*= Add Teacher`).click()
+    expect(browser).toHaveUrlContaining("teacher")
     await browser.$(`#index_number`).addValue(`TY150`)
     await browser.$(`#full_name`).addValue(`NITHISH`)
     await browser.$(`#i_name`).addValue(fullname)
@@ -26,7 +27,7 @@ describe('Admin activities',async () => {
     await browser.$('#gender').selectByVisibleText('Male')
     await browser.$(`#phone`).addValue(`948-019-6004`)
     await browser.$(`#email`).addValue(`${fullname}@gmail.com`)
-    const remotePath=await browser.uploadFile(`C:/Users/navee/OneDrive/Desktop/WDIO/s.png`)
+    const remotePath=await browser.uploadFile(`s.png`)
     await browser.$(`#fileToUpload`).setValue(remotePath)
     await browser.$(`#btnSubmit`).waitForClickable()
     await browser.$(`#btnSubmit`).click() 
@@ -37,6 +38,7 @@ describe('Admin activities',async () => {
     it(`verifying teacher profile in all teacher module`,async()=>{
         await browser.$(`//span[text()='Teacher']`).click()
         await browser.$(`aria/All Teacher`).click()
+        expect(browser).toHaveUrlContaining("all_teacher")
         await (await browser.$(`//input[@type='search']`)).setValue(`${fullname}`)
         const rs= await browser.$(`a=${fullname}`).isDisplayed()
         expect(rs).toBe(true)
@@ -51,6 +53,7 @@ describe('Admin activities',async () => {
         await browser.$(`#id_Delete`).click()
         await browser.$(`#btnYes`).waitForClickable()
         await browser.$(`#btnYes`).click()
+        await browser.waitUntil(()=> browser.$(`#delete_Success`).isDisplayed())
         const rs=await browser.$(`#delete_Success`).isDisplayed()
         expect(rs).toBe(true)
         })
