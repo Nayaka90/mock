@@ -42,10 +42,10 @@ describe("igp.com", async () => {
         }
         else
         throw new "please Enter valid date"
+        await (await browser.$(`#timepicker`)).waitForExist()
+        await (await browser.$(`#timepicker`)).selectByIndex(1);
     })
     it("dropdown handling", async () => {
-        await (await browser.$(`#timepicker`)).waitForExist()
-        await (await browser.$(`#timepicker`)).selectByVisibleText(`09:00 hrs - 13:00 hrs`);
         await (await browser.$(`//select[@class='pdpdd select-cattype']`)).selectByVisibleText(`Chocolate`);
         await (await browser.$(`#add-cart`)).click();
     })
