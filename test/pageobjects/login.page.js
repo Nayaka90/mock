@@ -1,42 +1,28 @@
 
+class LoginPage {
 
-import Page from './page.js';
-
-/**
- * sub page containing specific selectors and methods for a specific page
- */
-class LoginPage extends Page {
-    /**
-     * define selectors using getter methods
-     */
-    get inputUsername () {
-        return $('#username');
-    }
-
-    get inputPassword () {
-        return $('#password');
-    }
-
-    get btnSubmit () {
-        return $('button[type="submit"]');
-    }
-
-    /**
-     * a method to encapsule automation code to interact with the page
-     * e.g. to login using username and password
-     */
-    async login (username, password) {
-        await this.inputUsername.setValue(username);
-        await this.inputPassword.setValue(password);
-        await this.btnSubmit.click();
-    }
-
-    /**
-     * overwrite specific options to adapt it to page object
-     */
-    open () {
-        return super.open('login');
-    }
+get username_txt(){
+    return $(`[name='email']`)
+}
+get Passsword_txt(){
+    return $(`[name='password']`)
+}
+get Login_Btn(){
+  return $(`#btnSubmit`)
 }
 
-export default new LoginPage();
+async Login(un,pwd){
+    await (await this.username_txt).setValue(un)
+    await (await this.Passsword_txt).setValue(pwd)
+    await (await this.Login_Btn).waitForClickable()
+    await (await this.Login_Btn).click()
+}
+
+async launchBrowser(){
+   await browser.maximizeWindow()
+
+   await browser.url('')
+}
+}
+
+export default new LoginPage()

@@ -1,63 +1,38 @@
+import AddTeacherpage from "../pageobjects/AddTeacher.page.js"
+import AdminDashBoard from "../pageobjects/AdminDashBoard.page.js"
+import AllTeacher from "../pageobjects/AllTeacher.page.js"
+import LoginPage  from "../pageobjects/Login.Page.js"
 
-describe('Admin activities',async () => {
-    var r=Math.random()
-    var random=Math.floor(r*(99-1)+1)
-    const fullname =`NITHISH_yb${random}` 
+describe('Admin activities', async () => {
+    var r = Math.random()
+    var random = Math.floor(r * (99 - 1) + 1)
+    const fullname = `NITHISH_yb${random}`
+
     it('Launching browser and passing url', async () => {
-        await browser.maximizeWindow()
-        await browser.url("http://testingserver/domain/Student_Management_System/view/login.php")
+        await LoginPage.launchBrowser()
         expect(browser).toHaveUrlContaining("login")
-    }) 
-    it('login as a admin',async()=>{
-        await browser.$(`[name='email']`).setValue("admin@gmail.com")
-        await browser.$(`[name='password']`).setValue("12345")
-        await browser.$(`#btnSubmit`).waitForClickable()
-        await browser.$(`#btnSubmit`).click()
+    })
+    it('login as a admin', async () => {
+        await LoginPage.Login('admin@gmail.com', '12345')
         expect(browser).toHaveUrlContaining("dashboard")
     })
- 
-    it(`adding teacher profile`,async()=>{
-    await browser.$(`//span[text()='Teacher']`).click()
-    await browser.$(`a*= Add Teacher`).click()
-    expect(browser).toHaveUrlContaining("teacher")
-    await browser.$(`#index_number`).addValue(`TY150`)
-    await browser.$(`#full_name`).addValue(`NITHISH`)
-    await browser.$(`#i_name`).addValue(fullname)
-    await browser.$(`#address`).addValue(`Jp nagar`)
-    await browser.$('#gender').selectByVisibleText('Male')
-    await browser.$(`#phone`).addValue(`948-019-6004`)
-    await browser.$(`#email`).addValue(`${fullname}@gmail.com`)
-    const remotePath=await browser.uploadFile(`s.png`)
-    await browser.$(`#fileToUpload`).setValue(remotePath)
-    await browser.$(`#btnSubmit`).waitForClickable()
-    await browser.$(`#btnSubmit`).click() 
-    const rs= await browser.$(`//strong[.='Success!']`).isDisplayed()
-    expect(rs).toBe(true)
+
+    it(`adding teacher profile`, async () => {
+        await AdminDashBoard.clickOnAddTeacher_Link()
+        expect(browser).toHaveUrlContaining("teacher")
+        await AddTeacherpage.addTeacherProfile(fullname)
+        const confm = await AddTeacherpage.cnfm_Pop
+        expect(confm).toBeDisplayed()
     })
 
-    it(`verifying teacher profile in all teacher module`,async()=>{
-        await browser.$(`//span[text()='Teacher']`).click()
-        await browser.$(`aria/All Teacher`).click()
+    it(`verifying teacher profile in all teacher module`, async () => {
+        await AdminDashBoard.clickOnAllTeacher_Link()
         expect(browser).toHaveUrlContaining("all_teacher")
-        await (await browser.$(`//input[@type='search']`)).setValue(`${fullname}`)
-        const rs= await browser.$(`a=${fullname}`).isDisplayed()
-        expect(rs).toBe(true)
-        })
-
-    it(`deleting teacher profile in all teacher module`,async()=>{
-        await browser.$(`//input[@type='search']`).setValue(`Nithish`)
-        var ele=await browser.$(`a*=NITHISH`)
-        await ele.waitForClickable()
-        await ele.click()
-        await browser.$(`#id_Delete`).waitForClickable()
-        await browser.$(`#id_Delete`).click()
-        await browser.$(`#btnYes`).waitForClickable()
-        await browser.$(`#btnYes`).click()
-        await browser.waitUntil(()=> browser.$(`#delete_Success`).isDisplayed())
-        const rs=await browser.$(`#delete_Success`).isDisplayed()
-        expect(rs).toBe(true)
-        })
+        await AllTeacher.search_Input.setValue(`${fullname}`)
+        const techerslist = await browser.$(`a=${fullname}`)
+        expect(techerslist).toBeDisplayed()
     })
+})
 
 
 

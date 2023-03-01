@@ -23,7 +23,7 @@ describe("igp.com", async () => {
         expect(browser).toHaveUrlContaining("chocolate")
     })
 
-    it("calender popup handling and scroll action", async () => {
+    it("calender _Popup handling and scroll action", async () => {
         await (await browser.$(`#location-input`)).scrollIntoView()
         await (await browser.$(`#location-input`)).setValue('560056')
         await (await browser.$(`#show-Select_Date`)).waitForExist()
