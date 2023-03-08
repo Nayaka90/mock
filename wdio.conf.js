@@ -1,4 +1,5 @@
 import {expect} from 'chai'
+
 export const config = {
     //
     // ====================
@@ -23,9 +24,14 @@ export const config = {
     // then the current working directory is where your `package.json` resides, so `wdio`
     // will be called from there.
     //
-    specs: [
-        './test/specs/*.js'
+    specs: ['./test/specs/Addingstudentandguardiandetails.js','./test/specs/deletingStudentProfile.js',
+    `./test/specs/AddingteacherProfile.js`,'./test/specs/deletingTeacherProfile.js'
     ],
+    //suite file
+    suites:{
+     adding:['./test/specs/Addingstudentandguardiandetails.js',`./test/specs/AddingteacherProfile.js`],
+     deleting:['./test/specs/deletingStudentProfile.js','./test/specs/deletingTeacherProfile.js']
+    },
     // Patterns to exclude.
     exclude: [
         // 'path/to/excluded/files'
@@ -46,23 +52,22 @@ export const config = {
     // and 30 processes will get spawned. The property handles how many capabilities
     // from the same test should run tests.
     //
-    maxInstances: 10,
+    maxInstances: 1,
     //
     // If you have trouble getting all important capabilities together, check out the
     // Sauce Labs platform configurator - a great tool to configure your capabilities:
     // https://saucelabs.com/platform/platform-configurator
     //
-    capabilities: [{
+    capabilities: [
+        {
     
-        // maxInstances can get overwritten per capability. So if you have an in-house Selenium
-        // grid with only 5 firefox instances available you can make sure that not more than
-        // 5 instances get started at a time.
+    //     // maxInstances can get overwritten per capability. So if you have an in-house Selenium
+    //     // grid with only 5 firefox instances available you can make sure that not more than
+    //     // 5 instances get started at a time.
         maxInstances: 1,
-        //
         browserName: 'chrome',
         acceptInsecureCerts: true,
-            acceptInsecureCerts: true,
-            
+          
     'goog:chromeOptions': {
                 prefs: {
                   // 0 - Default, 1 - Allow, 2 - Block
@@ -73,7 +78,20 @@ export const config = {
         // it is possible to configure which logTypes to include/exclude.
         // excludeDriverLogs: ['*'], // pass '*' to exclude all driver session logs
         // excludeDriverLogs: ['bugreport', 'server'],
-    }],
+    // },
+    // {
+    //     maxInstances: 1,
+    //     browserName: 'firefox',
+    //     acceptInsecureCerts: true,
+      
+    //  },
+    //  {
+    //     maxInstances: 1,
+    //     browserName: 'MicrosoftEdge',
+    //     acceptInsecureCerts: true,
+      
+     }
+],
     //
     // ===================
     // Test Configurations
@@ -123,7 +141,8 @@ export const config = {
     // commands. Instead, they hook themselves up into the test process.
     services: ['chromedriver'],
     
-    // Framework you want to run your specs with.
+    // Framework you want to run your specs with.y
+
     // The following are supported: Mocha, Jasmine, and Cucumber
     // see also: https://webdriver.io/docs/frameworks
     //
@@ -132,18 +151,22 @@ export const config = {
     framework: 'mocha',
     //
     // The number of times to retry the entire specfile when it fails as a whole
-    // specFileRetries: 1,
+    //specFileRetries: 1,
     //
     // Delay in seconds between the spec file retry attempts
     // specFileRetriesDelay: 0,
     //
     // Whether or not retried specfiles should be retried immediately or deferred to the end of the queue
-    // specFileRetriesDeferred: false,
+    //specFileRetriesDeferred: false,
     //
     // Test reporter for stdout.
     // The only one supported by default is 'dot'
     // see also: https://webdriver.io/docs/dot-reporter
-    reporters: ['spec'],
+    reporters: ['spec',['allure', {
+        outputDir: 'allure-results',
+        disableWebdriverStepsReporting: true,
+        disableWebdriverScreenshotsReporting: false,
+    }]],
 
 
     
@@ -207,7 +230,7 @@ export const config = {
      * @param {Object}         browser      instance of created browser/device session
      */
     before: function (capabilities, specs) {
-       // global.expect=expect;
+        global.expect=expect;
      },
     /**
      * Runs before a WebdriverIO command gets executed.
@@ -226,12 +249,14 @@ export const config = {
      * Function to be executed before a test (in Mocha/Jasmine) starts.
      */
     // beforeTest: function (test, context) {
+       
     // },
     /**
      * Hook that gets executed _before_ a hook within the suite starts (e.g. runs before calling
      * beforeEach in Mocha)
      */
     // beforeHook: function (test, context) {
+        
     // },
     /**
      * Hook that gets executed _after_ a hook within the suite starts (e.g. runs after calling
@@ -249,8 +274,12 @@ export const config = {
      * @param {Boolean} result.passed    true if test has passed, otherwise false
      * @param {Object}  result.retries   informations to spec related retries, e.g. `{ attempts: 0, limit: 0 }`
      */
-    // afterTest: function(test, context, { error, result, duration, passed, retries }) {
-    // },
+    afterTest:// function(test, context, { error, result, duration, passed, retries }) {
+        async function (step, scenario, { error, duration, passed }, context) {
+            if (error) {
+              await browser.takeScreenshot();
+            }
+    },
 
 
     /**
@@ -303,3 +332,5 @@ export const config = {
     // onReload: function(oldSessionId, newSessionId) {
     // }
 }
+
+

@@ -3,7 +3,7 @@ describe("igp.com", async () => {
     const twomonth = new Date()
     twomonth.setMonth(todayDate.getMonth() + 2)
 //plz enter date from today to next 2 months only in yyyy/mm/dd note if date is 24 add one extra means dd=25
-    let deliverydate = "2023/2/25" 
+    let deliverydate = "2023/3/25" 
     deliverydate = new Date(deliverydate)
     const fullmonth = deliverydate.toLocaleDateString('default', { month: 'long' });
     const date = deliverydate.getDate()-1
@@ -41,7 +41,7 @@ describe("igp.com", async () => {
               }
         }
         else
-        throw new "please Enter valid date"
+        throw new Exception("please Enter valid date")
         await (await browser.$(`#timepicker`)).waitForExist()
         await (await browser.$(`#timepicker`)).selectByIndex(1);
     })

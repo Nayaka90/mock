@@ -2,7 +2,7 @@
 class LoginPage {
 
 get username_txt(){
-    return $(`[name='email']`)
+    return $(`#email`)
 }
 get Passsword_txt(){
     return $(`[name='password']`)
@@ -12,6 +12,7 @@ get Login_Btn(){
 }
 
 async Login(un,pwd){
+    await (await this.username_txt).waitForDisplayed()
     await (await this.username_txt).setValue(un)
     await (await this.Passsword_txt).setValue(pwd)
     await (await this.Login_Btn).waitForClickable()

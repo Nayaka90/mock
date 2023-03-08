@@ -1,3 +1,5 @@
+
+import { expect } from "chai";
 class AddStudent {
     get indexno_Txt() {
         return $(`#index_number`)
@@ -95,7 +97,7 @@ class AddStudent {
         await this.picUpload__Btn.setValue(localpath)
 
         const index = await this.g_indexno_Txt.getValue()
-        expect(index).toEqual('G-' + random)
+        expect(index).to.equal('G-' + random)
         await this.g_fullname_Txt.addValue(g_name)
         await this.g_nameWithIntial_Txt.addValue(g_name + ' b')
         await this.g_address_Txt.addValue('JP nagar')
